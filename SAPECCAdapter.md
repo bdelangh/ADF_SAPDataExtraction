@@ -4,7 +4,7 @@ The SAP ECC Adapter can be used to extract data from an SAP system using the oDa
 * RFC
 * SAP tables or Views
 * Data Extractors
-* HANA Tablesn, Views exposed via HANA XS
+* HANA Tables and Views exposed via HANA XS
 
 Note that this also means the Adapter is not limited to ECC also. For more info on the ECC Adapter see [Copy data from SAP ECC using Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-ecc)
 
@@ -13,6 +13,7 @@ Please have a look at [ABAP Developer Edition Installation Guide](https://blogs.
 
 This system contains an odata service which lists product data for a WebShop. The product data can be seen in a Fiori App at the following URL
 https://vhcalnplci:44300/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#Shell-home. See the Manage Products app.
+
 Note: 
 * the URLs assume you've mapped the hostname of your SAP system to an IP address in your hosts file.
 * the user needs the roles SAP_EPM_BCR_PURCHASER_T to see the Manage Products App. Use transaction su01 to assign these roles
@@ -50,7 +51,7 @@ create table NPLProducts (
 );
 ```
 
-The SQL Statements can be executed via the Qery Editor in the Azure Portal or via Azure Data Studio. For more info on Azure Data Studio, see What is Azure Data Studio https://docs.microsoft.com/en-us/sql/azure-data-studio/what-is.
+The SQL Statements can be executed via the Qery Editor in the Azure Portal or via Azure Data Studio. For more info on Azure Data Studio, see [What is Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/what-is).
 
 ![ProductTable SQL](Images/ECC/ProductTableDataStudio.jpg)
 
@@ -67,13 +68,16 @@ You'll also need to define a connection to the Azure SQL Database.
 
 ### Define DataSets
 As a next step you need to define the DataSets.
-For the SAP System.
+For the SAP System:
 
 ![SAP DataSet](Images/ECC/SAPDataSet.jpg)
 
 If the URL entered within the Connection is correct, ADF will display a dropdownlist of the EntitySets listed in the oData Metadata.
+Use preview data to test the connection.
 
-For the Azure SQL Database
+![Preview Data](Images/ECC/PreviewData.jpg)
+
+For the Azure SQL Database:
 
 ![SQL DataSet](Images/ECC/SQLDataSet.jpg)
 
@@ -123,7 +127,9 @@ CREATE TABLE [dbo].[watermarktable](
 Note that I included a field TableName, this allows me to keep track of the delta sync per table (or per object if you want).
 
 #### Initialize the watermark table.
+```SQL
 INSERT INTO watermarktable values('NPLProducts', '2017-01-01T00:00:00.000');
+```
 
 #### Update Watermark procedure
 We'll also need a procedure to update the watermark table
