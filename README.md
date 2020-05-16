@@ -6,7 +6,8 @@ For a generic presentation on the different SAP Connectors delivered with ADF, s
 This document assumes you're somewhat familiar with Azure Data Factory, Azure SQL Database, SAP HANA, oData & SQL.
 
 ## SAP Adapters
-* [SAP ECC Example](SAPECCAdapter.md) 
+* [SAP ECC Example - Azure SQL Server](SAPECCAdapter.md) 
+* [SAP ECC Example - Azure Data Lake]
 * SAP HANA Example - ToDo
 * SAP Table Example - ToDo
 * ODP Example - Todo

@@ -19,9 +19,9 @@ Note:
 
 The product data can be retrieved via http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products. The meta data of the oData Service can be found at http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/$metadata.
 
-![manage Products Icon](Images/ManageProductsIcon.jpg)
+![manage Products Icon](Images/ECC/ManageProductsIcon.jpg)
 
-![Manage Products](Images/ManageProducts.jpg)
+![Manage Products](Images/ECC/ManageProducts.jpg)
 
 The target for the extraction will be a Azure SQL DataBase.
 
@@ -52,36 +52,36 @@ create table NPLProducts (
 
 The SQL Statements can be executed via the Qery Editor in the Azure Portal or via Azure Data Studio. For more info on Azure Data Studio, see What is Azure Data Studio https://docs.microsoft.com/en-us/sql/azure-data-studio/what-is.
 
-![ProductTable SQL](Images/ProductTableDataStudio.jpg)
+![ProductTable SQL](Images/ECC/ProductTableDataStudio.jpg)
 
 ## Azure Data Factory Setup
 ### Define Connection
 First you need to create a Data Factory. In this Data Factory, we'll need to create a connection to the SAP System using the SAP ECC Connector.
 As url you'll need to use the base URL of the oData Service : http://x.x.x.x:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/.
 
-![SAP Connection](Images/SAPConnection.jpg)
+![SAP Connection](Images/ECC/SAPConnection.jpg)
 
 You'll also need to define a connection to the Azure SQL Database.
 
-![SQL Connection](Images/SQLConnection.jpg)
+![SQL Connection](Images/ECC/SQLConnection.jpg)
 
 ### Define DataSets
 As a next step you need to define the DataSets.
 For the SAP System.
 
-![SAP DataSet](Images/SAPDataSet.jpg)
+![SAP DataSet](Images/ECC/SAPDataSet.jpg)
 
 If the URL entered within the Connection is correct, ADF will display a dropdownlist of the EntitySets listed in the oData Metadata.
 
 For the Azure SQL Database
 
-![SQL DataSet](Images/SQLDataSet.jpg)
+![SQL DataSet](Images/ECC/SQLDataSet.jpg)
 
 ### Define Pipeline
 As the last step we can define a pipeline to extract from SAP (source) to SQl Server (sink). For this we use the Copy Data Action.
 As Source select the SAP Product DataSet and as sink the SQL Product DataSet. Also verify the mapping.
 
-![Mapping](Images/ProductMapping.jpg)
+![Mapping](Images/ECC/ProductMapping.jpg)
 
 To test the Pipeline you can use 'Add Trigger > Trigger Now'. This will start the pipeline.
 
@@ -90,7 +90,7 @@ After a successfull run, you can use SQL to verify the result.
 SELECT * FROM [dbo].[NPLProducts]
 ```
 
-![SQLInitialResult](Images/SQLInitialResult.jpg)
+![SQLInitialResult](Images/ECC/SQLInitialResult.jpg)
 
 ## Delta Updates
 ### Principle
@@ -99,11 +99,11 @@ For this we can use the lastModified field for the Products Entity set. We'll us
 The oData URL would then look like this : http://vhcalplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products?$filter=LastModified%20gt%20datetime%272020-01-01T00:00:00%27.
 To test the URL you can change a product via the Fiori App.
 
-![Edit Product](Images\EditProduct.jpg)
+![Edit Product](Images/ECC/EditProduct.jpg)
 
 Result of the oData call :
 
-![OData Delta](Images\oDataDelta.jpg)
+![OData Delta](Images/ECC/oDataDelta.jpg)
 
 To keep track of the different delta, we need to keep track of the last date when a synchronization was done.
 We'll save this date in a seperate table. The process flow is then as follows:
@@ -243,13 +243,13 @@ Now we can incorporate these elements into the pipeline.
 
 We'll need some additional actions to retrieve and update the watermark.
 
-![Update Pipeline](Images/UpdatePipeline.jpg)
+![Update Pipeline](Images/ECC/UpdatePipeline.jpg)
 
 The first step is a lookup to retrieve the last delta date. You'll also need to create a DataSet for the watermark table. Since I'm using the same Azure SQL Database I can reuse my connection to this database.
 
-![WaterMarkDataSet](Images/WaterMarkDataSet.jpg)
+![WaterMarkDataSet](Images/ECC/WaterMarkDataSet.jpg)
 
-![LookUpWaterMark](Images/LookUpWatermark.jpg)
+![LookUpWaterMark](Images/ECC/LookUpWatermark.jpg)
 
 In the copy step we need to update the source to include the date filter. In the sink we need to execute to stored procedure to update the products.
 In the Query parameter of the Source add : 
@@ -258,25 +258,25 @@ In the Query parameter of the Source add :
 $filter=LastModified%20gt%20datetime%27@{activity('LookupWaterMark').output.firstRow.WaterMarkValue}%27
 ```
 
-![UpdateSource](Images/UpdateSource.jpg)
+![UpdateSource](Images/ECC/UpdateSource.jpg)
 
-![UpdateSink](Images/UpdateSink.jpg)
+![UpdateSink](Images/ECC/UpdateSink.jpg)
 
 In the last action we need to update the watermark table.
 
-![Update WaterMark](Images/UpdateWaterMark.jpg)
+![Update WaterMark](Images/ECC/UpdateWaterMark.jpg)
 
 #### Testing
 You can now test the pipeline. On the first run, you will do an initial download once more. (Depending on how you initialized the watermark table).
 Future runs should only download deltas.
 
-![UpdateLog](Images/UpdateLog.jpg)
+![UpdateLog](Images/ECC/UpdateLog.jpg)
 
 ```SQL
 SELECT [ID], [description] FROM [dbo].[NPLProducts] WHERE ID='HT-1022';
 ```
 
-![Update Select](Images/UpdateSelect.jpg)
+![Update Select](Images/ECC/UpdateSelect.jpg)
 
 # Disclaimer :
 This code example describes the principle, the code is not for production usage.
