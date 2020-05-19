@@ -135,7 +135,7 @@ ToDo:
 ## Extract to JSON Format
 For this we need to use the JSON format in the definition of the DataSet and use this dataset in the copy pipeline.
 
-<img src="Images/ECC_ADF/JSONFormat.jpg">
+<img src="Images/ECC_ADF/JSONFormat.jpg" height=30>
 
 ### DataSet definition
 <img src="Images/ECC_ADF/JSONObjectSet.jpg">
@@ -158,7 +158,7 @@ Here you can choose the export as a Set of JSON Objects or as an Array of JSON O
 ## Extract to Parquet format
 For this we need to use the Parquet format in the definition of the DataSet and use this dataset in the copy pipeline.
 
-<img src="Images/ECC_ADF/ParquetFormat.jpg">
+<img src="Images/ECC_ADF/ParquetFormat.jpg" heigth=30>
 
 ### DataSet Definition
 
