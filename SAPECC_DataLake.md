@@ -28,18 +28,19 @@ Next we need to create a connection to the newly created Azure Data Lake.
 <img src="Images/ECC_ADF/AzDataLakeGen2Icon.jpg" height=130>
 
 
-<img src="Images/ECC_ADF/DataLakeConnection.jpg">
+<img src="Images/ECC_ADF/DataLakeConnection.jpg" height=350>
 
 ### DataSet
 We'll need to create a DataSet for our products using our previously defined connection.
-Choose Azure Data Lake Storage Gen2 and as format I chose Delimited Text (csv). Feel free to experiment with other data formats.
+Choose Azure Data Lake Storage Gen2 and as format I chose Delimited Text (csv). Feel free to experiment with other data formats (see also the Appendix beneath).
 
-<img src="Images/ECC_ADF/DelimitedText.jpg" height=250>
+<img src="Images/ECC_ADF/DelimitedText.jpg" height=150>
 
-<img src="Images/ECC_ADF/DataSetProductscsv.jpg">
+<img src="Images/ECC_ADF/DataSetProductscsv.jpg" height=240>
+
 <img src="Images/ECC_ADF/DataLakeDataSet2.jpg">
 
-Check 'First Row as Header' if you want your csv to have a header line.
+Check 'First Row as Header' if you want your csv to have a header line with column labels.
 
 ### Pipeline
 In the pipeline we use the Copy action as in the previous example. 
@@ -48,11 +49,11 @@ In the pipeline we use the Copy action as in the previous example.
 
 The source is linked to the productEntitySet.
 
-<img src="Images/ECC_ADF/CopySource.jpg">
+<img src="Images/ECC_ADF/CopySource.jpg" height=150>
 
 The sink is linked to the products directory in the data lake storage.
 
-<img src="Images/ECC_ADF/CopySink.jpg">
+<img src="Images/ECC_ADF/CopySink.jpg" height=250>
 
 After publishing, we can test the pipeline.
 Upon successfull completion of the pipeline run, a products.csv file will appear in the file directory.
@@ -135,12 +136,12 @@ ToDo:
 ## Extract to JSON Format
 For this we need to use the JSON format in the definition of the DataSet and use this dataset in the copy pipeline.
 
-<img src="Images/ECC_ADF/JSONFormat.jpg" height=30>
+<img src="Images/ECC_ADF/JSONFormat.jpg" height=150>
 
-### DataSet definition
+### JSON DataSet definition
 <img src="Images/ECC_ADF/JSONDataSet.jpg">
 
-### Copy Sink definition
+### JSON Copy Sink definition
 Use the JSON Dataset in the sink tab of the copy pipeline.
 
 <img src="Images/ECC_ADF/JSONSink.jpg">
@@ -158,12 +159,12 @@ Here you can choose the export as a Set of JSON Objects or as an Array of JSON O
 ## Extract to Parquet format
 For this we need to use the Parquet format in the definition of the DataSet and use this dataset in the copy pipeline.
 
-<img src="Images/ECC_ADF/ParquetFormat.jpg" heigth=30>
+<img src="Images/ECC_ADF/ParquetFormat.jpg" height=150>
 
-### DataSet Definition
+### Parquet DataSet Definition
 
 <img src="Images/ECC_ADF/ParquetDataSet.jpg">
 
-### Copy Sink definition
+### Parquet Copy Sink definition
 
 <img src="Images/ECC_ADF/ParquetSink.jpg">
