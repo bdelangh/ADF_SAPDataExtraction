@@ -138,7 +138,7 @@ For this we need to use the JSON format in the definition of the DataSet and use
 <img src="Images/ECC_ADF/JSONFormat.jpg" height=30>
 
 ### DataSet definition
-<img src="Images/ECC_ADF/JSONObjectSet.jpg">
+<img src="Images/ECC_ADF/JSONDataSet.jpg">
 
 ### Copy Sink definition
 Use the JSON Dataset in the sink tab of the copy pipeline.
