@@ -127,6 +127,43 @@ Also the watermark table is updated to the timestamp of the last pipeline run.
 
 ------------------------------------------------
 ToDo:
-- [ ] Merge the CSV files
-- [ ] Parquet file
+- [ ] Merge the CSV / JSON / Parquet files
 - [ ] Template for updates
+------------------------------------------------
+
+# Appendix
+## Extract to JSON Format
+For this we need to use the JSON format in the definition of the DataSet and use this dataset in the copy pipeline.
+
+<img src="Images/ECC_ADF/JSONFormat.jpg">
+
+### DataSet definition
+<img src="Images/ECC_ADF/JSONObjectSet.jpg">
+
+### Copy Sink definition
+Use the JSON Dataset in the sink tab of the copy pipeline.
+
+<img src="Images/ECC_ADF/JSONSink.jpg">
+
+Here you can choose the export as a Set of JSON Objects or as an Array of JSON Objects.
+
+#### Set of JSON Objects
+
+<img src="Images/ECC_ADF/JSONObjectSet.jpg">
+
+#### Array of JSON Objects
+
+<img src="Images/ECC_ADF/JSONArray.jpg">
+
+## Extract to Parquet format
+For this we need to use the Parquet format in the definition of the DataSet and use this dataset in the copy pipeline.
+
+<img src="Images/ECC_ADF/ParquetFormat.jpg">
+
+### DataSet Definition
+
+<img src="Images/ECC_ADF/ParquetDataSet.jpg">
+
+### Copy Sink definition
+
+<img src="Images/ECC_ADF/ParquetSink.jpg">
