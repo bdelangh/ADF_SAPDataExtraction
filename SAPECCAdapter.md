@@ -115,6 +115,9 @@ We'll save this date in a seperate table. The process flow is then as follows:
 2. Use this date in the filter to extract the latest changes
 3. Update the date of the last delta extraction
 
+For more info on Delta patterns see [Incrementally load data from a source data store to a destination data store](https://docs.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-overview).
+
+
 ### Setup
 #### Watermark Table
 Create a new table to contain the last synchronization dates. 
@@ -284,7 +287,7 @@ SELECT [ID], [description] FROM [dbo].[NPLProducts] WHERE ID='HT-1022';
 
 ![Update Select](Images/ECC/UpdateSelect.jpg)
 
-# Disclaimer :
+# Disclaimer
 This code example describes the principle, the code is not for production usage.
 
 

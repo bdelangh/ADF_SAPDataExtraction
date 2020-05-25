@@ -4,11 +4,10 @@ In this example we will use the ECC Adapter to extract SAP data towards an Azure
 We'll use a similar setup as in the previous example.
 
 ## Setup
-Compared to the previos example we need to create a connection to the data lake and a corresponding data set.
+Compared to the previos example we need to create a connection to the data lake and a corresponding data set. In this example we'll use [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-datalake-gen2).
 
 ### Azure Data Lake
-First we need to create a Azure Data Lake Storage Gen2. For this we need to create a storage account.
-
+First we need to create a Azure Data Lake Storage Gen2. For this we need to create a storage account.\
 See [Create an Azure Storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=azure-portal).
 
 <img src="Images/ECC_ADF/storageAccount.jpg">
@@ -32,7 +31,7 @@ Next we need to create a connection to the newly created Azure Data Lake.
 
 ### DataSet
 We'll need to create a DataSet for our products using our previously defined connection.
-Choose Azure Data Lake Storage Gen2 and as format I chose Delimited Text (csv). Feel free to experiment with other data formats (see also the Appendix beneath).
+Choose Azure Data Lake Storage Gen2 and as format I chose Delimited Text (csv). Feel free to experiment with other data formats such as JSON and Parquet (see also the Appendix beneath).
 
 <img src="Images/ECC_ADF/DelimitedText.jpg" height=150>
 
@@ -114,7 +113,7 @@ The sink of the copy action
 The stored procedure from the [ECC-SQL server example](SAPECCAdapter.md) to update the watermark can be reused.
 Use the import parameter button to retrieve the parameters from the stored procedure.
 
-<img src="Images/ECC_ADF/updatewatermark.jpg">
+<img src="Images/ECC_ADF/updateWatermark.jpg">
 
 You can now test the pipeline.
 Depending on the initialization of the watermark table an initial download is done. Afterwards you can update the product via the fiori app [Manage Products](http://vhcalplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products?$filter=LastModified%20gt%20datetime%272020-01-01T00:00:00%27).
@@ -129,6 +128,7 @@ Also the watermark table is updated to the timestamp of the last pipeline run.
 ------------------------------------------------
 ToDo:
 - [ ] Merge the CSV / JSON / Parquet files
+- [ ] Delta Lake
 - [ ] Template for updates
 ------------------------------------------------
 
@@ -158,6 +158,7 @@ Here you can choose the export as a Set of JSON Objects or as an Array of JSON O
 
 ## Extract to Parquet format
 For this we need to use the Parquet format in the definition of the DataSet and use this dataset in the copy pipeline.
+Apache Parquet is a columnar file format that provides optimizations to speed up queries and is a far more efficient file format than CSV or JSON. For more info see [Apache Parquet](https://en.wikipedia.org/wiki/Apache_Parquet)
 
 <img src="Images/ECC_ADF/ParquetFormat.jpg" height=150>
 
