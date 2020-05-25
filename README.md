@@ -3,7 +3,7 @@ This repository contains examples on how you can extract data from an SAP system
 
 For a generic presentation on the different SAP Connectors delivered with ADF, see [SAP Data Integration using Azure Data Factory](https://github.com/Azure/Azure-DataFactory/blob/master/whitepaper/SAP%20Data%20Integration%20using%20Azure%20Data%20Factory.pdf).
 
-This document assumes you're somewhat familiar with Azure Data Factory, Azure SQL Database, SAP HANA, oData & SQL.
+This document assumes you're familiar with Azure Data Factory, Azure SQL Database, SAP HANA, oData & SQL.
 
 ## SAP Adapters
 * [SAP ECC Example - Target : Azure SQL Server](SAPECCAdapter.md) 
