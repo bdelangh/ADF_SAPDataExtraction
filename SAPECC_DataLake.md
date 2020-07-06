@@ -3,6 +3,10 @@
 In this example we will use the ECC Adapter to extract SAP data towards an Azure Data Lake.
 We'll use a similar setup as in the previous example.
 
+[Part 1 - ECC Adapter & DataLake](SAPECC_DataLake.md) describes how the ECC adapter can be used to download ECC data to Azure data lake folders. 
+[Part 2 - Delta Handling](SAPECC_DataLake2.md) describes the tooling to upload an initial download into a delta table and to merge delta changes into the delta table.
+[Part 3 - Azure Data Factory Integration](SAPECC_DataLake3.md) describes how to integrate the tools from Part 2 into Azure Data Factory.
+
 ## Setup
 Compared to the previos example we need to create a connection to the data lake and a corresponding data set. In this example we'll use [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-datalake-gen2).
 
@@ -67,7 +71,7 @@ Open Excell and use the import data from csv/txt file to see the product data.
 <img src="Images/ECC_ADF/excell_productdata.jpg">
 
 ## FileName
-Each time the pipeline is executed the products csv file is overwritten. You can prevent this by introducing variables with the file name in the DataSet. You can for example make use of a timestamp within filename.
+Each time the pipeline is executed the products csv file is overwritten. You can prevent this by introducing variables in the file name. You can for example make use of a timestamp within the filename.
 
 ```javascript
 @concat('products_', formatDateTime(utcnow(),'yyyy-MM-dd-hhmmss'),'.csv')
@@ -119,18 +123,9 @@ You can now test the pipeline.
 Depending on the initialization of the watermark table an initial download is done. Afterwards you can update the product via the fiori app [Manage Products](http://vhcalplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products?$filter=LastModified%20gt%20datetime%272020-01-01T00:00:00%27).
 A next run of the pipeline will just retrieve the updated product and put this in a seperate xls file.
 
-
 <img src="Images/ECC_ADF/HT-1022Update.jpg" heigth=100>
 
-
 Also the watermark table is updated to the timestamp of the last pipeline run.
-
-------------------------------------------------
-ToDo:
-- [ ] Merge the CSV / JSON / Parquet files
-- [ ] Delta Lake
-- [ ] Template for updates
-------------------------------------------------
 
 # Appendix
 ## Extract to JSON Format
