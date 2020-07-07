@@ -7,7 +7,7 @@ This document assumes you're familiar with Azure Data Factory, DataBricks, Azure
 
 ## SAP Adapters
 * [SAP ECC Example - Target : Azure SQL Server](SAPECCAdapter.md) 
-* [SAP ECC Example - Target : Azure Data Lake - Part1](SAPECC_DataLake.md)
+* [SAP ECC Example - Target : Azure Data Lake - Part1 - Data Lake Sink](SAPECC_DataLake.md)
 * [SAP ECC Example - Target : Azure Data Lake - Part2 - Delta Handling](SAPECC_DataLake2.md)
 * [SAP ECC Example - Target : Azure Data Lake - Part3 - ADF Integration](SAPECC_DataLake3.md)
 * SAP HANA Example - ToDo
