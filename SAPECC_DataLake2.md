@@ -64,7 +64,7 @@ For our products example :
 * Directory Name : NPL
 * Mount Point : npldata
 
-<img src="pythonMountCommand.jpg">
+<img src="Images/ECC_ADF2/pythonMountCommand.jpg">
 
 ## Create Delta Table
 The products data can now we imported into a Delta Lake table.
@@ -82,7 +82,7 @@ productsDF.write.format("delta").save("/mnt/npldata/deltaLake/products")
 
 You can use the Azure Storage Explorer to have a look at the delta table.
 
-<img src="storageExplorerDeltaTable.jpg">
+<img src="Images/ECC_ADF2/storageExplorerDeltaTable.jpg">
 
 To be able to query the products data, you need to create a table.
 
@@ -95,11 +95,11 @@ LOCATION '/mnt/npldata/deltaLake/products';
 
 The products table now shows up in the cluster data.
 
-<img src="clusterData.jpg">
+<img src="Images/ECC_ADF2/clusterData.jpg">
 
 When selecting the products table, you can see the schema and sample data.
 
-<img src="productsTable.jpg">
+<img src="Images/ECC_ADF2/productsTable.jpg">
 
 You can now query the table using sql.
 ```sql
@@ -107,7 +107,7 @@ You can now query the table using sql.
 select * from products where Id = "HT-1022"
 ```
 
-<img src="sqlQuery.jpg">
+<img src="Images/ECC_ADF2/sqlQuery.jpg">
 
 ## Delta Handling
 The advantage of using a Delta Table is that we can easily upsert the delta changes.
@@ -139,7 +139,7 @@ ON products.Id = newProducts.Id
 
 Afterwards you can query the results of the merge.
 
-<img src="queryMergeResults.jpg">
+<img src="Images/ECC_ADF2/queryMergeResults.jpg">
 
 <!--  Tutorial : https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-use-databricks-spark -->
 
