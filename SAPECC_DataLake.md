@@ -108,7 +108,7 @@ select * from watermarktable where TableName='NPLProductsDL';
 
 The source of the copy action
 
-<img src="Images/ECC_ADF/sourceFilter.jpg">
+<img src="Images/ECC_ADF/SourceFilter.jpg">
 
 The sink of the copy action
 
