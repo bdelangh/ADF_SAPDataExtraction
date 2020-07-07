@@ -151,3 +151,5 @@ Afterwards you can query the results of the merge.
 * [Azure Data Lake Gen2](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-datalake-gen2)
 * [Delta Lake](https://docs.microsoft.com/en-us/azure/databricks/delta/)
 
+## Disclaimer
+This code example describes the principle, the code is not for production usage.

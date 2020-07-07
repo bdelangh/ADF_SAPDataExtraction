@@ -1,4 +1,5 @@
 # ADF SAP ECC Adapter
+
 The SAP ECC Adapter can be used to extract data from an SAP system using the oData protocol. So any object that can be exposed as an oData service can be used. For example :
 * BAPI
 * RFC
@@ -12,17 +13,18 @@ In this example we'll extract product data. The system I'm using is a ABAP 7.5 S
 Please have a look at [ABAP Developer Edition Installation Guide](https://blogs.sap.com/2016/11/03/sap-nw-as-abap-7.50-sp2-developer-edition-to-download-consise-installation-guide/) to get hold of the system.
 
 This system contains an odata service which lists product data for a WebShop. The product data can be seen in a Fiori App at the following URL
-https://vhcalnplci:44300/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#Shell-home. See the Manage Products app.
-
-Note: 
-* the URLs assume you've mapped the hostname of your SAP system to an IP address in your hosts file.
-* the user needs the roles SAP_EPM_BCR_PURCHASER_T to see the Manage Products App. Use transaction su01 to assign these roles
-
-The product data can be retrieved via http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products. The meta data of the oData Service can be found at http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/$metadata.
+`https://vhcalnplci:44300/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html#Shell-home`. See the Manage Products app.
 
 ![manage Products Icon](Images/ECC/ManageProductsIcon.jpg)
 
 ![Manage Products](Images/ECC/ManageProducts.jpg)
+
+
+Note: 
+* the URLs assume you've mapped the hostname (eg. vhcalnplci) of your SAP system to an IP address in your hosts file.
+* the user needs the roles SAP_EPM_BCR_PURCHASER_T to see the Manage Products App. Use transaction su01 to assign these roles
+
+The product data can be retrieved via `http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products`. The meta data of the oData Service can be found at `http://vhcalnplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/$metadata`.
 
 The target for the extraction will be a Azure SQL DataBase.
 
@@ -30,6 +32,7 @@ The target for the extraction will be a Azure SQL DataBase.
 First we must create an SQL DataBase and prepare it to receive the product data.
 To create an Azure SQL Database, see xxxxxxxxx .
 We need to create a table which will contain the product data. You can do this with the following SQL script
+
 ```SQL
 create table NPLProducts (
     id nvarchar(25) not null,
@@ -58,7 +61,8 @@ The SQL Statements can be executed via the Qery Editor in the Azure Portal or vi
 ## Azure Data Factory Setup
 ### Define Connection
 First you need to create a Data Factory. In this Data Factory, we'll need to create a connection to the SAP System using the SAP ECC Connector.
-As url you'll need to use the base URL of the oData Service : http://x.x.x.x:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/.
+As url you'll need to use the base URL of the oData Service : `http://x.x.x.x:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/`.
+Note: you need to use the IP adress of your SAP system here, unless you have a proper DNS entry for your SAP hostname.
 
 ![SAP Connection](Images/ECC/SAPConnection.jpg)
 
@@ -100,7 +104,7 @@ SELECT * FROM [dbo].[NPLProducts]
 ### Principle
 The pipeline that we have now is fine for an initial download. But for future downloadswe would only like to synchronize the modified products.
 For this we can use the lastModified field for the Products Entity set. We'll use this field as a filter in the oData query.
-The oData URL would then look like this : http://vhcalplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products?$filter=LastModified%20gt%20datetime%272020-01-01T00:00:00%27.
+The oData URL would then look like this : `http://vhcalplci:8000/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products?$filter=LastModified%20gt%20datetime%272020-01-01T00:00:00%27`.
 To test the URL you can change a product via the Fiori App.
 
 ![Edit Product](Images/ECC/EditProduct.jpg)
@@ -287,7 +291,7 @@ SELECT [ID], [description] FROM [dbo].[NPLProducts] WHERE ID='HT-1022';
 
 ![Update Select](Images/ECC/UpdateSelect.jpg)
 
-# Disclaimer
+## Disclaimer
 This code example describes the principle, the code is not for production usage.
 
 

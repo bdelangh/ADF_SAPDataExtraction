@@ -164,3 +164,6 @@ Apache Parquet is a columnar file format that provides optimizations to speed up
 ### Parquet Copy Sink definition
 
 <img src="Images/ECC_ADF/ParquetSink.jpg">
+
+## Disclaimer
+This code example describes the principle, the code is not for production usage.
