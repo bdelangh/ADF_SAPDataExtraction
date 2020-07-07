@@ -65,9 +65,9 @@ Upon successfull completion of the pipeline run, a products.csv file will appear
 You can use Excell to view the data.
 Open Excell and use the import data from csv/txt file to see the product data.
 
-<img src="Images/ECC_ADF/fromtextcsv.jpg" height=30>
-
-<img src="Images/ECC_ADF/excell_productdata.jpg">
+<img src="Images/ECC_ADF/fromtextcsv.jpg" height=30>\
+\
+<img src="Images/ECC_ADF/excell_productdata.jpg">\
 
 ## FileName
 Each time the pipeline is executed the products csv file is overwritten. You can prevent this by introducing variables in the file name. You can for example make use of a timestamp within the filename.
