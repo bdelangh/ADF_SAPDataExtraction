@@ -3,9 +3,9 @@
 In this example we will use the ECC Adapter to extract SAP data towards an Azure Data Lake.
 We'll use a similar setup as in the previous example.
 
-[Part 1 - ECC Adapter & DataLake](SAPECC_DataLake.md) describes how the ECC adapter can be used to download ECC data to Azure data lake folders. 
-[Part 2 - Delta Handling](SAPECC_DataLake2.md) describes the tooling to upload an initial download into a delta table and to merge delta changes into the delta table.
-[Part 3 - Azure Data Factory Integration](SAPECC_DataLake3.md) describes how to integrate the tools from Part 2 into Azure Data Factory.
+[Part 1 - ECC Adapter & DataLake](SAPECC_DataLake.md) describes how the ECC adapter can be used to download ECC data to Azure data lake folders.\
+[Part 2 - Delta Handling](SAPECC_DataLake2.md) describes the tooling to upload an initial download into a delta table and to merge delta changes into the delta table.\
+[Part 3 - Azure Data Factory Integration](SAPECC_DataLake3.md) describes how to integrate the tools from Part 2 into Azure Data Factory.\
 
 ## Setup
 Compared to the previos example we need to create a connection to the data lake and a corresponding data set. In this example we'll use [Azure Data Lake Storage Gen2](https://docs.microsoft.com/en-us/azure/databricks/data/data-sources/azure/azure-datalake-gen2).
@@ -28,19 +28,18 @@ Using [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storag
 ### Connection
 Next we need to create a connection to the newly created Azure Data Lake.
 
-<img src="Images/ECC_ADF/AzDataLakeGen2Icon.jpg" height=130>
-
-
+<img src="Images/ECC_ADF/AzDataLakeGen2Icon.jpg" height=130>\
+\
 <img src="Images/ECC_ADF/DataLakeConnection.jpg" height=350>
 
 ### DataSet
 We'll need to create a DataSet for our products using our previously defined connection.
 Choose Azure Data Lake Storage Gen2 and as format I chose Delimited Text (csv). Feel free to experiment with other data formats such as JSON and Parquet (see also the Appendix beneath).
 
-<img src="Images/ECC_ADF/DelimitedText.jpg" height=150>
-
-<img src="Images/ECC_ADF/DataSetProductscsv.jpg" height=240>
-
+<img src="Images/ECC_ADF/DelimitedText.jpg" height=150>\
+\
+<img src="Images/ECC_ADF/DataSetProductscsv.jpg" height=240>\
+\
 <img src="Images/ECC_ADF/DataLakeDataSet2.jpg">
 
 Check 'First Row as Header' if you want your csv to have a header line with column labels.
@@ -78,6 +77,7 @@ Each time the pipeline is executed the products csv file is overwritten. You can
 ```
 
 <img src="Images/ECC_ADF/DataSetDateTime.jpg">
+
 
 <img src="Images/ECC_ADF/StorageExplorerDateTime.jpg">
 
