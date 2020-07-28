@@ -10,9 +10,12 @@ This document assumes you're familiar with Azure Data Factory, DataBricks, Azure
 * [SAP ECC Example - Target : Azure Data Lake - Part1 - Data Lake Sink](SAPECC_DataLake.md)
 * [SAP ECC Example - Target : Azure Data Lake - Part2 - Delta Handling](SAPECC_DataLake2.md)
 * [SAP ECC Example - Target : Azure Data Lake - Part3 - ADF Integration](SAPECC_DataLake3.md)
+* [SAP ECC Table Example](SAPTableConnector.md)
+* SAP ECC ODP Example - ToDo
+* [SAP BW MDX Example](SAPBW_MDXAdapter.md)
+* SAP BW Open Hub example - ToDo
+* SAP BW Table - ToDo
 * SAP HANA Example - ToDo
-* SAP Table Example - ToDo
-* ODP Example - Todo
 
 
 
