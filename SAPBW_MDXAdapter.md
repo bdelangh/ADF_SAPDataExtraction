@@ -98,3 +98,11 @@ select [Measures].[GrossAmt] on columns,
 from [2CREPM_SOANLYC1/2CREPM_SOANLYQ1]
 
 -->
+
+<!--
+Functions
+BAPI_MDPROVIDER_GET_CATALOGS
+RFC_GET_FUNCTION_INTERFACE
+RFC_GET_NAMETAB
+
+-->
