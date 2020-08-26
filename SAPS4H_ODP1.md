@@ -163,13 +163,54 @@ This delta token can be used in a subsequent delta load to retrieve the changes 
 
 Since our example is about sales orders you can use transaction `VA02 - Change Sales Order` to update a sales order.
 
-The changed sales orders can be retrieved via the `DeltaLinksOfAttrOfZBD_ISALESDOC_1` Entity set and the delta token. Note the `ChangesAfter`.
+The changed sales orders can be retrieved via the `DeltaLinksOfAttrOfZBD_ISALESDOC_1` Entity set, the delta token and the `ChangesAfter` function.
 
 `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20200826154617_000019000')/ChangesAfter`
 
 <img src="Images\S4H_ODP\changesafter.jpg">
 
 Also here the response contains a new delta token which can be used to track subsequent changes.
+
+A call to the plain `DeltaLinksOfAttrOfZBD_ISALESDOC_1` Entity set will retrieve a list of the available delta tokens.
+`http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1`.
+
+<img src="Images\S4H_ODP\deltaTokenList.jpg">
+
+### Integration with ADF
+Disclaimer: this part will just explain the concept. Additional development will be needed to mold this into a production worthy flow.
+
+The initial download can easily be done using the ADF SAP ECC Adapter, since it's oData based. Unfortunately I haven't found a way to :
+1. Put the header variable to subscribe for deltas
+2. Extract the delta token from the response
+
+So I suggest to do this step via other means. (Azure Function?)
+For the delta handling I see 2 possibilities.
+1. You extract the delta token from the reponse of the current call and store this for subsequent calls.
+2. Or you retrieve the list of delta tokens and select the latest, based upond the 'createdAt' property.
+
+Further I could image you want to keep track of the delta tokes used to indicate a state if the load was successfull or not.
+Subsequent jobs can then pickup failed delta loads.
+
+A generic sketch of possible flows.
+
+#### Option A - get last delta token
+1. Retrieve list of deltatokens
+	a. If no tokens then initial download
+2. Retrieve last not confirmed
+3. Loop over tokens to retrieve corresponding changes
+    a. execute the data flow
+    b. if successfull, confirm the token so it's not picked up by step 1
+    c. if not successfull, stop (subsequent deltas could overwrite deltas from the previous delta)
+
+#### Option B - rolling update
+The option assumes seperate storage to store the 'next delta' token.
+1. Retrieve next delta token from db table
+	a. If no token then initial download
+		i. This will also deliver an next deltatoken
+2. Execute delta pipeline to get updated rows
+	a. Update the sink
+	b. Retrieve the next delta token and store in db table
+
 
 ## Documentation
 * [Extracting and Replicating Data with Operational Data Provisioning Framework](https://help.sap.com/viewer/107a6e8a38b74ede94c833ca3b7b6f51/2.0.0/en-US/202710d1cee84333a4f4d593324bdf51.html)
