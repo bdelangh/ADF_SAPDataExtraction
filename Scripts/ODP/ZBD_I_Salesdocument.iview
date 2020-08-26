@@ -1,0 +1,41 @@
+@AbapCatalog.sqlViewName: 'ZBD_ISALESDOC_1'
+@AbapCatalog.compiler.compareFilter: true
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'CDS for Extraction I_SalesDocument'
+@Analytics:{dataCategory:#DIMENSION ,
+            dataExtraction.enabled:true}
+@Analytics.dataExtraction.delta.byElement.name:'LastChangeDateTime'
+@Analytics.dataExtraction.delta.byElement.maxDelayInSeconds: 1800
+@VDM.viewType: #BASIC
+
+            define view ZBD_I_Salesdocument as select from I_SalesDocument {
+key SalesDocument,
+
+      //Category
+      SDDocumentCategory,
+      SalesDocumentType,
+      SalesDocumentProcessingType,
+
+      CreationDate,
+      CreationTime,
+      LastChangeDate,
+      //@Semantics.systemDate.lastChangedAt: true
+      LastChangeDateTime,
+
+      //Organization
+      SalesOrganization,
+      DistributionChannel,
+      OrganizationDivision,
+      SalesGroup,
+      SalesOffice,
+      PurchaseOrderByCustomer,
+      
+      //Pricing
+      //TotalNetAmount,
+      TransactionCurrency,
+      PricingDate,
+      RetailPromotion,
+      //PriceDetnExchangeRate,
+      SalesDocumentCondition
+    
+}   
