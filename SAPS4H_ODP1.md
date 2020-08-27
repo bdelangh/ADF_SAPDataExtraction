@@ -183,7 +183,7 @@ The initial download can easily be done using the ADF SAP ECC Adapter, since it'
 1. Put the header variable to subscribe for deltas
 2. Extract the delta token from the response
 
-So I suggest to do this step via other means. (Azure Function?)
+So I suggest to do this step via other means. (An Azure Function might be an option)
 For the delta handling I see 2 possibilities.
 1. You extract the delta token from the reponse of the current call and store this for subsequent calls.
 2. Or you retrieve the list of delta tokens and select the latest, based upond the 'createdAt' property.
@@ -210,6 +210,66 @@ The option assumes seperate storage to store the 'next delta' token.
 2. Execute delta pipeline to get updated rows
 	a. Update the sink
 	b. Retrieve the next delta token and store in db table
+
+#### Example implementation of Option A - Get Last Delta Token
+Beneath you can find an example implementation for the 'Get Last Delta Token' option.
+
+The pipeline in Azure DataFactory would consist of 2 steps :
+1. Retrieve Latest Delta Token
+2. Execute the Delta Load
+
+In order to retrieve the last delta token by calling the DeltaLinksOfAttrOfZBD_ISALESDOC_1 function and select the latest by using the `CreatedAt` property. Unoftunatley SAP did not implement the `$orderby`option so I had to create an Azure Function to execute this task.
+ `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1?$orderby=CreatedAt`
+
+<img src="Images\S4H_ODP\orderby_error.jpg">
+
+The pipeline in ADF then looks as follows.
+
+<img src="Images\S4H_ODP\ADFpipeline.jpg">
+
+Sample code for the Azure Function can be found at (Scripts\ODP\GetODPDeltaToken.cs).
+The first action in the ADF pipeline is a call to this function.
+
+<img src="Images\S4H_ODP\ADFfunction.jpg">
+
+The next step is a 'Copy' action. 
+First we need to setup a Linked Service for the SAP system based on the SAP ECC Connector.
+Here we enter the base URL of the oData Service.
+
+`http://x.x.x.x:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV`
+
+<img src="LinkedService.jpg">
+
+Next we need to create a dataset. Here we need to enter the rest of the path for reading out the delta changes. Since the deltatoken is 'part' of this url, we need to construct the URL dynamically.
+`.../sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('<deltatoken')/ChangesAfter`
+Since the token is the output of the previous step, we need to introduce a parameter. Here we introduce the parameter `token`. For testing purposes you can give in a default value.
+
+<img src="Images\S4H_ODP\ParameterToken.jpg">
+
+Enter the following as path :
+```
+@concat('DeltaLinksOfAttrOfZBD_ISALESDOC_1(%27',dataset().Token, '%27)/ChangesAfter')
+```
+
+<img src="Images\S4H_ODP\DataSet.jpg">
+
+As a next step we create the copy action in the ADF pipeline. The source of this step is our SAP oData Dataset. The output of the Azure Function step needs to be linked to the `token` input parameter of the DataSet
+In the source dataset properties enter the following :
+
+```
+@activity('Get DeltaToken').output.DeltaToken
+```
+
+<img src="Images\S4H_ODP\sourceDataSet.jpg">
+
+A SQL DB server can be used as a sink.
+
+<img src="sinkDataSet.jpg">
+
+You can now test this delta load by changing some sales orders and verifying the result in the destination.
+
+Note : The initial download can be done in another pipeline using the plain entityset and indicating the subscription paramater in the HTTP header.
+
 
 
 ## Documentation
