@@ -264,12 +264,11 @@ In the source dataset properties enter the following :
 
 A SQL DB server can be used as a sink.
 
-<img src="sinkDataSet.jpg">
+<img src="Images\S4H_ODP\sinkDataSet.jpg">
 
 You can now test this delta load by changing some sales orders and verifying the result in the destination.
 
-Note : The initial download can be done in another pipeline using the plain entityset and indicating the subscription paramater in the HTTP header.
-
+Note : The initial download can be done using another pipeline using the plain entityset and providing the subscription paramater in the HTTP header.
 
 
 ## Documentation
