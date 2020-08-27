@@ -247,7 +247,7 @@ The first action in the ADF pipeline is connected to this Linked Service.
 
 <img src="Images\S4H_ODP\ADFfunction.jpg">
 
-The next step is the 'Copy' action. 
+The next step in the pipeline is the 'Copy' action. 
 First we need to setup a Linked Service for the SAP system based on the SAP ECC Connector.
 Here we enter the base URL of the oData Service.
 
