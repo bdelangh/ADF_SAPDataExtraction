@@ -218,21 +218,36 @@ The pipeline in Azure DataFactory would consist of 2 steps :
 1. Retrieve Latest Delta Token
 2. Execute the Delta Load
 
-In order to retrieve the last delta token by calling the DeltaLinksOfAttrOfZBD_ISALESDOC_1 function and select the latest by using the `CreatedAt` property. Unoftunatley SAP did not implement the `$orderby`option so I had to create an Azure Function to execute this task.
- `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1?$orderby=CreatedAt`
+In order to retrieve the last delta token by calling the DeltaLinksOfAttrOfZBD_ISALESDOC_1 function and select the latest by using the `CreatedAt` property. Unfortunately SAP did not implement the `$orderby`option so an Azure Function is needed to execute this task.
+ 
+ `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1?$orderby=CreatedAt` is not implemented.
 
 <img src="Images\S4H_ODP\orderby_error.jpg">
 
-The pipeline in ADF then looks as follows.
+In the end the ADF pipeline looks as follows.
 
 <img src="Images\S4H_ODP\ADFpipeline.jpg">
 
+For more info on how to integrate an Azure Function into Azure Data Factory, see [Azure Function activity in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/control-flow-azure-function-activity).
 Sample code for the Azure Function can be found at (Scripts\ODP\GetODPDeltaToken.cs).
-The first action in the ADF pipeline is a call to this function.
+This function returns the last delta token. The response looks as follows:
+
+```json
+{
+    "DeltaToken": "D20200826161002_000029000"
+}
+```
+The `DeltaToken` property will be used later to retrieve the token. 
+
+ADF needs an Function Linked Service to connect to the function.
+
+<img src="Images\S4H_ODP\FunctionLinkedService.jpg"> 
+
+The first action in the ADF pipeline is connected to this Linked Service.
 
 <img src="Images\S4H_ODP\ADFfunction.jpg">
 
-The next step is a 'Copy' action. 
+The next step is the 'Copy' action. 
 First we need to setup a Linked Service for the SAP system based on the SAP ECC Connector.
 Here we enter the base URL of the oData Service.
 
@@ -241,7 +256,7 @@ Here we enter the base URL of the oData Service.
 <img src="LinkedService.jpg">
 
 Next we need to create a dataset. Here we need to enter the rest of the path for reading out the delta changes. Since the deltatoken is 'part' of this url, we need to construct the URL dynamically.
-`.../sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('<deltatoken')/ChangesAfter`
+`.../sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('<deltatoken>')/ChangesAfter`
 Since the token is the output of the previous step, we need to introduce a parameter. Here we introduce the parameter `token`. For testing purposes you can give in a default value.
 
 <img src="Images\S4H_ODP\ParameterToken.jpg">
@@ -254,7 +269,7 @@ Enter the following as path :
 <img src="Images\S4H_ODP\DataSet.jpg">
 
 As a next step we create the copy action in the ADF pipeline. The source of this step is our SAP oData Dataset. The output of the Azure Function step needs to be linked to the `token` input parameter of the DataSet
-In the source dataset properties enter the following :
+In the source dataset properties enter the following to retrieve the delta token from the function response:
 
 ```
 @activity('Get DeltaToken').output.DeltaToken
@@ -268,7 +283,7 @@ A SQL DB server can be used as a sink.
 
 You can now test this delta load by changing some sales orders and verifying the result in the destination.
 
-Note : The initial download can be done using another pipeline using the plain entityset and providing the subscription paramater in the HTTP header.
+Note : The initial download can be done by another pipeline using the plain entityset and providing the subscription paramater in the HTTP header.
 
 
 ## Documentation
@@ -277,3 +292,4 @@ Note : The initial download can be done using another pipeline using the plain e
 * [ODP-Based Data Extraction via OData](https://help.sap.com/viewer/ccc9cdbdc6cd4eceaf1e5485b1bf8f4b/7.5.18/en-US/11853413cf124dde91925284133c007d.html)
 * [Using the OData Service for Extracting ODP Data](https://help.sap.com/viewer/ccc9cdbdc6cd4eceaf1e5485b1bf8f4b/7.5.18/en-US/50f4ee6253134d3cafa25b9444f0c5a9.html)
 * [ODP based data extraction from S/4Hana via oData Client](https://github.com/ROBROICH/SAP_ODP_ODATA_CLIENT/blob/master/README.md)
+* [Azure Function activity in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/control-flow-azure-function-activity).
