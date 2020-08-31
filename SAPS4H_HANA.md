@@ -71,9 +71,9 @@ In ADF you first need to setup a linked service.
 
 <img src="Images\S4H_HANA\hana_linked_service_details.jpg">
 
-ToDo : SAP Poort Nr?
-
-
+Note: For the SQL port number, see [TCP/IP Ports of All SAP Products](https://help.sap.com/viewer/ports).
+The convention for the port number is 3<SysNr of HANA DB>15 for a MDC setup.
+In the S4HANA image from SAP CAL, the port nr is 30215, since the HANA db has 'O2' as instance nr and the SAPHANADB schema is installed in the first tenant database.  
 
 #### Data Set
 The next step is to create a dataset.
@@ -126,6 +126,7 @@ then the system returns multiple client/mandants for the S4Hana.
 
 <img src="Images\S4H_HANA\mandt_preview.jpg">
 
-## Documentation
+## Related Documentation
 * [Copy data from SAP HANA using Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-hana)
 * [Integration runtime in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime)
+* [TCP/IP Ports of All SAP Products](https://help.sap.com/viewer/ports)
