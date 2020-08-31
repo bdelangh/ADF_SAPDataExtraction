@@ -17,14 +17,14 @@ To use this SAP HANA connector, you need to:
 * Install the SAP HANA ODBC driver on the Integration Runtime machine. You can download the SAP HANA ODBC driver from the SAP Software Download Center.
 
 ### Install a Self-Hosted Integration Runtime
-See ToDo: insert link
+See [Integration runtime in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime).
 
 ### Download and install the ODBC Driver
 The HANA ODBC Driver can be downloaded from the SAP Download Center via the SAP Download Manager.
 
 <img src="Images\S4H_HANA\odbc_download.jpg">
 
-This will result in a *.sar file which is unpacked using SAPCAR.exe. (This tool can also be download from the SAP Download Center.)
+This will result in a *.sar file which is unpacked using SAPCAR.exe. This tool can also be downloaded from the SAP Download Center.
 
 ```
 sapcar.exe -xvf *.sar
@@ -98,7 +98,34 @@ You can now trigger the pipeline for execution. The resulting csv file looks as 
 
 <img src="Images\S4H_HANA\mara_csv.jpg">
 
+### Query
+Note that although in the DataSet you can specify the table, you can query any table using the `Query` option. 
+You could for example extract all Maintenance Order headers using the following query :
 
+```sql
+select * from "SAPHANADB"."AUFK" where "AUTYP"=30
+```
+<img src="Images\S4H_HANA\aufk_source.jpg">
+
+Data Preview results in :
+
+<img src="Images\S4H_HANA\aufk_preview.jpg">
+
+### Mandant
+Since the HANA Connector is acting directly on the DB level, the connector retrieves all data from all clients/mandants. This in contradiction with the ABAP layer where the ABAP layer automically filters on the mandant using the sy-mandt from the ABAP context. This is the mandant where the user running the query is logged on to. If you use multiple clients in your SAP system you should be aware of this.
+
+The S4Hana image from SAP CAL uses multiple client. If you execute the following SQL statement :
+
+```sql
+SELECT distinct "MANDT" FROM "SAPHANADB"."MARA"
+```  
+
+then the system returns multiple client/mandants for the S4Hana.
+
+<img src="Images\S4H_HANA\mandt_query.jpg">
+
+<img src="Images\S4H_HANA\mandt_preview.jpg">
 
 ## Documentation
 * [Copy data from SAP HANA using Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-hana)
+* [Integration runtime in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime)
