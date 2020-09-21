@@ -14,7 +14,7 @@ The updated ODP-OData feature in SAP NW 7.5 is the enabling technology for achie
 <img src="Images\S4H_ODP\odp_overview.png" height=400>
 
 ## Setup
-For this demo I'm using a S/4Hana system deployed via [SAP CAL](https://cal.sap.com) into Microsoft Azure. The rest of this demo will focus on ODP enablement of ABAP CDS Views.
+For this demo I'm using a S/4Hana system deployed via [SAP CAL](https://cal.sap.com) into Microsoft Azure. The document will focus on ODP enablement of ABAP CDS Views. The ODP extraction process should be similar for the other objects lik extractors.
 
 ### Setup of ABAP CDS View
 An ABAP CDS view will serve as data source. The setup of the CDS view and the oData enablement is described in the blog of Roman Broich.
