@@ -169,7 +169,7 @@ The changed sales orders can be retrieved via the `DeltaLinksOfAttrOfZBD_ISALESD
 
 `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('D20200826154617_000019000')/ChangesAfter`
 
-<img src="Images\S4H_ODP\changesafter.jpg">
+<img src="Images\S4H_ODP\changesAfter.jpg">
 
 Also here the response contains a new delta token which can be used to track subsequent changes.
 
