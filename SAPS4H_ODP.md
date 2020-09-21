@@ -1,4 +1,5 @@
 # Extracting data via Operational Data Provision - ODP
+___
 In this part we will use the ODP principle to extract data from SAP ECC. The ODP service will need to be oData enabled for our ADF connectors to be able to pick it up.
 
 For data extraction scenarios from S/4HANA the following requirements have typically to be met:
