@@ -10,7 +10,7 @@ For data extraction scenarios from S/4HANA the following requirements have typic
 
 The updated ODP-OData feature in SAP NW 7.5 is the enabling technology for achieving the requirements describe above.
 
-<img src="ImagesS4H_ODP\odpoverview.jpg">
+<img src="Images\S4H_ODP\odp_overview.png" height=400>
 
 ## Setup
 For this demo I'm using a S/4Hana system deployed via [SAP CAL](https://cal.sap.com) into Microsoft Azure.
@@ -64,14 +64,14 @@ define view ZBD_I_Salesdocument as select from I_SalesDocument {
 }   
 
 ```
-Note the field `LastChangeDateTime` which is used for delta calculation.
+>Note the field `LastChangeDateTime` which is used for delta calculation.
 
 Use eclipse to create and activate this view.
-* 
-* Create a Data Definition
-<img src="Images\S4H_ODP\datadefinition.jpg">
 
-<img src="Images\S4H_ODP\datadefinition2.jpg">
+* Create a Data Definition\
+<img src="Images\S4H_ODP\data_definition.jpg" height=300>\
+\
+<img src="Images\S4H_ODP\data_definition2.jpg" height=150>
 
 * Insert the code into the view
 * Save and activate the view
@@ -79,7 +79,8 @@ Use eclipse to create and activate this view.
 Note: You can use the Data Dictionary (transaction `SE11`)within the SAP system to check if your view is correctly generated. 
 The name of the view is the `@AbapCatalog.sqlViewName` viewname property. You can also check the contents via this transaction.
 
-<img src="Images\S4H_ODP\se11_viewContents.jpg">
+<img src="Images\S4H_ODP\se11_viewContents.jpg">\
+\
 <img src="Images\S4H_ODP\se11_viewDict.jpg">
 
 ### oData Enablement
@@ -88,7 +89,7 @@ This part is executed using the SAPGui.
 * Create a new project
 * Generate the oData extraction classes. Use Menu: Redefine - ODP Extraction
 
-<img src="Images\S4H_ODP\redefine.jpg">
+<img src="Images\S4H_ODP\redefine.jpg" height=200>\
 
 * Search for your view and press `Add ODP`
 
@@ -96,68 +97,68 @@ This part is executed using the SAPGui.
 
 * The system will now ask for the name of the classes to implement the Data Model and the oData Service. Thses classes will be generated for you.
 
-<img src="Images\S4H_ODP\odpclasses.jpg>
+<img src="Images\S4H_ODP\odpclasses.jpg">
 
 * Select all Entity Types, Function Imports and Associations
 
-<img src="Images\S4H_ODP\odpgenerate.jpg>
+<img src="Images\S4H_ODP\odpgenerate.jpg">
 
 * Finish the wizard
 * Back in `SEGW`, Generate the Runtime Objects
 
-<img src="Images\S4H_ODP\odpgenerate2.jpg">
+<img src="Images\S4H_ODP\odpgenerate2.jpg" height=200>
 
 * Register the oData Service at the Gateway
 
-<img src="Images\S4H_ODP\odpregistration.jpg">
+<img src="Images\S4H_ODP\odpregistration.jpg" height=200>\
 
-Note: If you're unable to register the SAP Gateway, see [OSS Note 2550286 - Unable to Register service in SEGW transaction](https://launchpad.support.sap.com/#/notes/2550286)
+> Note: If you're unable to register the SAP Gateway, see [OSS Note 2550286 - Unable to Register service in SEGW transaction](https://launchpad.support.sap.com/#/notes/2550286)
 
 You can check the registered service in the HTTP Service Hierarchy (transaction `SICF`). The path to the service is `/default_host/sap/opu/odata/sap/ZBD_ISALESDOC_1_SRV`.
 
-## Generated oData Service
+## Generated oData Services
 
-<img src="Images\S4H_ODP\oDataImplementation.jpg">
+<img src="Images\S4H_ODP\oDataImplementation.jpg" height=300 >
 
 The meta data form the oData service can be retrieved using `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/$metadata`
 Note: The SAP CAL image uses a fixed host name for the S4Hana system. In your hostz file you can map this hostname to the external IP address of the system.
 
 The generated oData Service will have 2 entity sets :
-* AttrOfZBD_ISALESDOC_1 : this Entity set can be used to extract the sales orders from the underlying view.
+* <b>AttrOfZBD_ISALESDOC_1</b> : this Entity set can be used to extract the sales orders from the underlying view.
 Use `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/AttrOfZBD_ISALESDOC_1` to retrieve the data.
 This is the basic OData service. You can also apply filters like with any oData Service.
 
 <img src="Images\S4H_ODP\salesorders.jpg">
 
-* DeltaLinksOf AttrOfZBD_ISALESDOC_1 : This service can used to retrieve the delta tokens. Delta tokens are used to identify the changed Sales Orders.
+* <b>DeltaLinksOf AttrOfZBD_ISALESDOC_1</b> : This service can used to retrieve the delta tokens. Delta tokens are used to identify the changed Sales Orders.
 
 Additionaly there are 2 Function Imports :
-* SubscribedToAttrOfZBAD_ISALESDOC1 : this service checks if you're subscribed to receive delta loads
-* TerminateDeltasForAttrOfZBD_ISALESDOC_1 : this service terminates your delta subscription
+* <b>SubscribedToAttrOfZBAD_ISALESDOC1</b> : this service checks if you're subscribed to receive delta loads
+* <b>TerminateDeltasForAttrOfZBD_ISALESDOC_1</b> : this service terminates your delta subscription
 
 ## ODP Flow
 The goal is to first do an initial load and afterwards execute delta loads containing only the changed sales orders since the last load.
 To be able to retrieve delta you first need to subscribe to the delta queue.
 
 ### Initial Load
-You can do this during the initial load using a specific http header: 'Prefer = odata.track-changes'.
-The initial download is executed using ´http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/AttrOfZBD_ISALESDOC_1´. 
+You can do this during the initial load using a specific http header: `Prefer = odata.track-changes`.\
+The initial download is executed using `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/AttrOfZBD_ISALESDOC_1`. 
 
 <img src="Images\S4H_ODP\getSalesOrdersAndSubscribe.jpg">
 
-If you now execute the function `SubscribedToAttrOfZBD_ISALESDOC_1`, this should reurn `true`.
+If you now execute the function `SubscribedToAttrOfZBD_ISALESDOC_1`, this should return `true`.\
 Use `http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/SubscribedToAttrOfZBD_ISALESDOC_1`.
 
 <img src="Images\S4H_ODP\subscribed.jpg">
 
-You can also see the subscription in the 'Monitor Delta Queue Subscriptions' (transaction `odqmon`).
+You can also see the subscription in the `Monitor Delta Queue Subscriptions` (transaction `odqmon`).
 
 <img src="Images\S4H_ODP\odqmon.jpg">
 
 ### Delta Load
 During the initial load, the SAP system generated a delta token. You can find this token at the end of the Initial Load response.
 
-<img src="Images\S4H_ODP\initialdeltatoken.jpg">
+<img src="Images\S4H_ODP\initialdeltatoken.jpg" height=200>
 
 This delta token can be used in a subsequent delta load to retrieve the changes since the previous load. This delta load when then again return a delta token which can be used to retrieve changes since this last load, etc ... .
 
@@ -228,8 +229,8 @@ In the end the ADF pipeline looks as follows.
 
 <img src="Images\S4H_ODP\ADFpipeline.jpg">
 
-For more info on how to integrate an Azure Function into Azure Data Factory, see [Azure Function activity in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/control-flow-azure-function-activity).
-Sample code for the Azure Function can be found at (Scripts\ODP\GetODPDeltaToken.cs).
+For more info on how to integrate an Azure Function into Azure Data Factory, see [Azure Function activity in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/control-flow-azure-function-activity).\
+Sample code for the Azure Function can be found at (Scripts\ODP\GetODPDeltaToken.cs).\
 This function returns the last delta token. The response looks as follows:
 
 ```json
@@ -239,27 +240,27 @@ This function returns the last delta token. The response looks as follows:
 ```
 The `DeltaToken` property will be used later to retrieve the token. 
 
-ADF needs an Function Linked Service to connect to the function.
+ADF needs a `Function Linked Service` to connect to the Azure Function.
 
-<img src="Images\S4H_ODP\FunctionLinkedService.jpg"> 
+<img src="Images\S4H_ODP\FunctionLinkedService.jpg" height=400> 
 
 The first action in the ADF pipeline is connected to this Linked Service.
 
 <img src="Images\S4H_ODP\ADFfunction.jpg">
 
-The next step in the pipeline is the 'Copy' action. 
+The next step in the pipeline is the `Copy` action.\ 
 First we need to setup a Linked Service for the SAP system based on the SAP ECC Connector.
 Here we enter the base URL of the oData Service.
 
 `http://x.x.x.x:50000/sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV`
 
-<img src="LinkedService.jpg">
+<img src="Images\S4H_ODP\LinkedService.jpg" height=300>
 
 Next we need to create a dataset. Here we need to enter the rest of the path for reading out the delta changes. Since the deltatoken is 'part' of this url, we need to construct the URL dynamically.
 `.../sap/opu/odata/SAP/ZBD_ISALESDOC_1_SRV/DeltaLinksOfAttrOfZBD_ISALESDOC_1('<deltatoken>')/ChangesAfter`
-Since the token is the output of the previous step, we need to introduce a parameter. Here we introduce the parameter `token`. For testing purposes you can give in a default value.
+Since the token is the output of the previous step, we need to introduce a parameter to capture this output. Here we introduce the parameter `token`. For testing purposes you can give in a default value.
 
-<img src="Images\S4H_ODP\ParameterToken.jpg">
+<img src="Images\S4H_ODP\TokenParameter.jpg" height=150>
 
 Enter the following as path :
 ```
@@ -283,7 +284,7 @@ A SQL DB server can be used as a sink.
 
 You can now test this delta load by changing some sales orders and verifying the result in the destination.
 
-Note : The initial download can be done by another pipeline using the plain entityset and providing the subscription paramater in the HTTP header.
+>Note : The initial download can be done by another pipeline using the plain entityset and providing the subscription paramater in the HTTP header.
 
 
 ## Documentation
