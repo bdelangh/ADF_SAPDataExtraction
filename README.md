@@ -1,4 +1,4 @@
-# ADF_SAPDataExtraction
+# SAP Data Extraction using Azure Data Factory
 This repository contains examples on how you can extract data from an SAP system using Azure Data Factory (ADF).
 
 For a generic presentation on the different SAP Connectors delivered with ADF, see [SAP Data Integration using Azure Data Factory](https://github.com/Azure/Azure-DataFactory/blob/master/whitepaper/SAP%20Data%20Integration%20using%20Azure%20Data%20Factory.pdf).
