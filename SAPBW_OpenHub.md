@@ -62,18 +62,18 @@ In background this will generate the Data Transfer Process and the Actual table 
 
 Upon successfull execution the generated table is now filled. You can verify this using the Data Browser (transaction se16).
 
-<img src="Images\BW_OpenHub\databrowser.jpg">
+<img src="Images\BW_OpenHub\dataBrowser.jpg">
 
 
 ## Azure Data Factory Pipeline
 ### Linked Service
 In Azure Data Factory, you first need to create a linked service based on the SAP BW Open Hub adapter.
 
-<img src="Images\BW_OpenHub\adaptersOverview.jpg">
+<img src="Images\BW_OpenHub\adaptersOverview.jpg" height = 200>
 
 Enter the SAP BW Connection Settings
 
-<img src="Images\BW_OpenHub\connectionSettings.jpg">
+<img src="Images\BW_OpenHub\connectionSettings.jpg" height = 700>
 
 ### DataSet
 Create a data set based upon SAP BW OpenHub.
@@ -83,12 +83,15 @@ Create a data set based upon SAP BW OpenHub.
 <!-- Note : preview data doesn't work -->
 
 ### Pipeline
+In this case the ADF pipeline consists of a single `copy activity`.
+The source looks as follows :
 
+<img src="Images\BW_OpenHub\OpenHubSource.jpg">
 
+As destination I chose Azure Data Lake. The setup is similar as to the Data Lake example in [SAP ECC Adapter](SAPECC_DataLake.md).
 
-## Documentation
-* [SAP BW OpenHub Extractor](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-business-warehouse-open-hub)
-* [Load BW Data via OpenHub](https://docs.microsoft.com/en-us/azure/data-factory/load-sap-bw-data)
+><b>Note :</b> In this example the `Base Request ID` was hardcoded. A production pipeline would at the end of its flow save the hightest request id in storage. The first step in the pipeline would be to retrieve the latest request id and have this as an input parameter to the copy activity.\
+<img src="Images\BW_OpenHub\requestIdFlow.jpg">
 
 <!-- 
 ## Function Modules
@@ -109,5 +112,12 @@ Create a data set based upon SAP BW OpenHub.
 To speed up the data loading, you can set `parallelCopies` on the copy activity to load data from SAP BW Open Hub in parallel. For example, if you set parallelCopies to four, Data Factory concurrently executes four RFC calls, and each RFC call retrieves a portion of data from your SAP BW Open Hub table partitioned by the DTP request ID and package ID. This applies when the number of unique DTP request ID + package ID is bigger than the value of parallelCopies. When copying data into file-based data store, it's also recommanded to write to a folder as multiple files (only specify folder name), in which case the performance is better than writing to a single file.
 See [Copy Activity Properties](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-business-warehouse-open-hub#copy-activity-properties)
 
-Multiple PackageIds???
+><b>Note : </b> The nr of packages if determined by the nr of records defined as package size.
+
+<img src="Images\BW_OpenHub\packageSize.jpg" height = 300>
+
+
+## Documentation
+* [SAP BW OpenHub Extractor](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-business-warehouse-open-hub)
+* [Load BW Data via OpenHub](https://docs.microsoft.com/en-us/azure/data-factory/load-sap-bw-data)
 
