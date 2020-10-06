@@ -105,3 +105,9 @@ A other elaborate example of using the table connector can be found in the ADF T
 
 ## Documentation
 * [SAP Table Connector Documentation](https://docs.microsoft.com/en-us/azure/data-factory/connector-sap-table)
+
+<!--
+## ToDo
+* table list automation
+* sequencing
+-->
