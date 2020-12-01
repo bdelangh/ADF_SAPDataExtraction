@@ -5,7 +5,7 @@
 [Part 3 - Azure Data Factory Integration](SAPECC_DataLake3.md) describes how to integrate the tools from Part 2 into Azure Data Factory.\
 
 ## Process
-The process for delta handling is as follows:
+A possible way for delta handling is as follows:
 * The Initial download of the data is saved within Azure DataLake
 * This Initial download is used to fill a delta table using DataBricks
 * Delta changes are then merged with Delta Table using DataBricks
@@ -95,7 +95,7 @@ LOCATION '/mnt/npldata/deltaLake/products';
 
 The products table now shows up in the cluster data.
 
-<img src="Images/ECC_ADF2/clusterData.jpg">
+<img src="Images/ECC_ADF2/clusterData.jpg" height=250>
 
 When selecting the products table, you can see the schema and sample data.
 
