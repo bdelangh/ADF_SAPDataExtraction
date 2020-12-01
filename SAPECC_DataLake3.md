@@ -28,7 +28,7 @@ Make sure to copy the generated token. You won't be able to access it again.
 
 <img src="Images/ECC_ADF3/token.jpg" height=100>\
 \
-<img src="Images/ECC_ADF3/generatedToken.jpg">\
+<img src="Images/ECC_ADF3/generatedToken.jpg">
 
 ### DataBricks Linked Service
 You can now create a linked service for DataBricks.
@@ -40,7 +40,7 @@ In DataFactory, choose connections.
 Next create a new linked service. Select `compute`, followed by `Azure DataBricks`.
 
 <img src="Images/ECC_ADF3/linkedService.jpg" height=200>\
-
+\
 Enter the settings for the DataBricks service :
 * enter a name for the linked service
 * choose your Azure Subscription
