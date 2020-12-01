@@ -16,17 +16,17 @@ See [Generate a personal access token](https://docs.databricks.com/dev-tools/api
 
 Within the DataBricks Workspace, choose `user settings` and go to `Access Tokens`.
 
-<img src="Images/ECC_ADF3/userSetttings.jpg">\
+<img src="Images/ECC_ADF3/userSettings.jpg" height=300>\
 \
-<img src="Images/ECC_ADF3/accessTokens.jpg">\
+<img src="Images/ECC_ADF3/accessTokens.jpg">
 
 Generate a new token. Leave the lifetime empty so the token lives indefinetly.
 
-<img src="Images/ECC_ADF3/generateToken.jpg">
+<img src="Images/ECC_ADF3/generateToken.jpg" height=140>
 
 Make sure to copy the generated token. You won't be able to access it again.
 
-<img src="Images/ECC_ADF3/token.jpg">\
+<img src="Images/ECC_ADF3/token.jpg" height=100>\
 \
 <img src="Images/ECC_ADF3/generatedToken.jpg">\
 
@@ -35,11 +35,11 @@ You can now create a linked service for DataBricks.
 
 In DataFactory, choose connections.
 
-<img src="Images/ECC_ADF3/connections.jpg">
+<img src="Images/ECC_ADF3/connections.jpg" height=100>
 
 Next create a new linked service. Select `compute`, followed by `Azure DataBricks`.
 
-<img src="Images/ECC_ADF3/linkedService.jpg">\
+<img src="Images/ECC_ADF3/linkedService.jpg" height=200>\
 
 Enter the settings for the DataBricks service :
 * enter a name for the linked service
@@ -49,7 +49,7 @@ Enter the settings for the DataBricks service :
 * select existing interactive cluster. Make sure the cluster is running. 
 * select your cluster
 
-<img src="Images/ECC_ADF3/newLinkedService.jmg">\
+<img src="Images/ECC_ADF3/newLinkedService.jpg" height=600>
 
 Test the connection.
 
@@ -58,19 +58,19 @@ Note : the `existing cluster` is the cluster where the DataLake filesystem is mo
 ## Data Factory Pipeline
 Now you can create the data factory pipeline.
 
-<img src="Images/ECC_ADF3/newPipeline.jpg">
+<img src="Images/ECC_ADF3/newPipeline.jpg" height=250>
 
 Insert a DataBricks notebook activity.
 
-<img src="Images/ECC_ADF3/dataBricksActivity.jpg">
+<img src="Images/ECC_ADF3/dataBricksActivity.jpg" height=200>
 
 Link the activity to the DataBricks Linked Service.
 
-<img src="Images/ECC_ADF3/dataBricksActivityLink.jpg">
+<img src="Images/ECC_ADF3/dataBricksActivityLink.jpg" height=150>
 
 Select the path to your notebook.
 
-<img src="Images/ECC_ADF3/chooseNotebook.jpg">
+<img src="Images/ECC_ADF3/chooseNotebook.jpg" height=350>
 
 Save and publish the pipeline.
 Put some csv files with product updates in your source directory and trigger the pipeline.
@@ -78,20 +78,20 @@ Use the monitor tool to examine the progress.
 
 <img src="Images/ECC_ADF3/pipelineRun.jpg">
 
-Note: when an error occurs ADF provides a link to the databricks log of your pipeline run.
-
-<img src="Images/ECC_ADF3/runtimeError.jpg">\
-\
-<img src="Images/ECC_ADF3/dataBricksRuntimeError.jpg">\
+>Note: when an error occurs ADF provides a link to the databricks log of your pipeline run.
+>
+><img src="Images/ECC_ADF3/runtimeError.jpg" height=200>\
+>\
+><img src="Images/ECC_ADF3/dataBricksRuntimeError.jpg" height=200>\
 
 
 Upon successfull completion of the pipeline run, you can use sql to query the results and verify if the csv files are moved to the processed folder.
 
 #### SQL Query
-<img src="Images/ECCÄDF3/updateSQLResults.jpg">\
+<img src="Images/ECC_ADF3/updateSQLResults.jpg">
 
 #### Processed Folder
-<img src="Images/ECC_ADF3/processedFolder.jpg">\
+<img src="Images/ECC_ADF3/processedFolder.jpg">
 
 As a last step you can combine this pipeline with the pipeline created in [Part 2 - Delta Handling](SAPECC_DataLake2.md) to have the complete process in one pipeline.
 
