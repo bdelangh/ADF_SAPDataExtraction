@@ -52,7 +52,7 @@ Grant the 'CATALOG READ' System privilege.
 
 Switch to user 'SAPHANADB' and grant Object privileges to access the 'SAPHANADB' schema. Choose the privileges according to your needs.
 
-<img src="Images\S4H_HANA\ADFUser2.jpg>
+<img src="Images\S4H_HANA\ADFUser2.jpg">
 
 Swith to the ADF User and verify if you have access to the 'SAPHANADB' schema.
 Also try if you can access table contents via SQL.
@@ -61,7 +61,7 @@ Also try if you can access table contents via SQL.
 SELECT TOP 1000 * FROM "SAPHANADB"."MARA"
 ```
 
-<img src="Images\S4H_HANA\ADFUser_Mara.jpg>
+<img src="Images\S4H_HANA\ADFUser_Mara.jpg">
 
 ### ADF Setup
 #### Linked Service
@@ -79,7 +79,7 @@ In the S4HANA image from SAP CAL, the port nr is 30215, since the HANA db has 'O
 The next step is to create a dataset.
 In the dataset you can enter the table you want to retrieve data from. Eg. the MARA table containing material master data.
 
-<img src="Images\S4H_HANA\hana_data_set.jpg">
+<img src="Images\S4H_HANA\hana_dataset.jpg">
 
 Using preview, you can test if the connection works.
 
@@ -92,7 +92,7 @@ In turn this dataset is used in a copy action within an ADF pipeline.
 
 As sink I chose a csv file within Azure DataLake. For more info on how to set this up see [ADF SAP ECC Adapter - Azure Data Lake](SAPECC_DataLake.md).
 
-<img src="Images\S4H_HANA\sink_datatset.jpg">
+<img src="Images\S4H_HANA\sink_dataset.jpg">
 
 You can now trigger the pipeline for execution. The resulting csv file looks as follows.
 
